@@ -1,1 +1,2 @@
-*.csv filter=lfs diff=lfs merge=lfs -text
+*.csv diff=lfs merge=lfs -text
+--everything !text !filter !merge !diff
