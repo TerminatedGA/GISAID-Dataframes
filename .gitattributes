@@ -1,2 +1,2 @@
-*.csv -text
+*.pkl -text
 --everything !text !filter !merge !diff
