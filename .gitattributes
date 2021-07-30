@@ -1,2 +1,2 @@
-*.pkl -text
+*.feather -text
 --everything !text !filter !merge !diff
