@@ -1,0 +1,2 @@
+*.feather -text
+--everything !text !filter !merge !diff
