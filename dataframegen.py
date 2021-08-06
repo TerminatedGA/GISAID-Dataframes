@@ -128,50 +128,39 @@ def loop2(mutation2):
             return [b[0], b[2], initlistmid, percentagelistlistmid, mutationlistmid, maxprevalencechangealllistmid, maxprevalencelistmid, maxprevalencechangelistmid]
 
 with Pool(multiprocessing.cpu_count()-1) as p:
-    genelistmid, aamutationlistmid, initlistmid, percentagelistlistmid, mutationlistmid, maxprevalencechangealllistmid, maxprevalencelistmid, maxprevalencechangelistmid = [d for d in zip(*[x for x in list(tqdm(p.imap(loop2, tqdm(mutationlist, position=0, leave=True), chunksize = 50), position=0, leave=True)) if x is not None])]
+    genelist, aamutationlist, initlist, percentagelistlist, mutationlist, maxprevalencechangealllist, maxprevalencelist, maxprevalencechangelist = [d for d in zip(*[x for x in list(tqdm(p.imap(loop2, tqdm(mutationlist, position=0, leave=True), chunksize = 50), position=0, leave=True)) if x is not None])]
             
-aamutationlistmid = [none.replace('-', 'None') for none in aamutationlistmid]
-
-genelist = []
-aamutationlist = []
-mutationlist1 = []
-percentagelistlist1 =  []
-maxprevalencelist = []
-maxprevalencechangelist = []
-maxprevalencechangealllist = []
-initlist = []
+aamutationlist = [none.replace('-', 'None') for none in aamutationlist]
 
 #Remove synonymous mutations
 print("Removing synonymous mutations...")
 
-for searchna in range(len(aamutationlistmid)):
-    if aamutationlistmid[searchna] != 'None':
-        genelist.append(genelistmid[searchna])
-        aamutationlist.append(aamutationlistmid[searchna])
-        mutationlist1.append(mutationlistmid[searchna])
-        percentagelistlist1.append(percentagelistlistmid[searchna])
-        maxprevalencelist.append(maxprevalencelistmid[searchna])
-        maxprevalencechangelist.append(maxprevalencechangelistmid[searchna])
-        maxprevalencechangealllist.append(maxprevalencechangealllistmid[searchna])
-        initlist.append(initlistmid[searchna])
+synonymouslist = []
+
+for searchna in range(len(aamutationlist)):
+    if aamutationlist[searchna] != 'None':
+        synonymouslist.append('No')
+    else:
+        synonymouslist.append('Yes')
         
-mutlabellist = [s + ' (' for s in mutationlist1]
+mutlabellist = [s + ' (' for s in mutationlist]
 aamutationlabellist = [': '+ s + ')' for s in aamutationlist]
 labellist = [list(a) for a in zip(mutlabellist, genelist, aamutationlabellist)]
 labellist = [''.join([str(elem) for elem in labelsublist]) for labelsublist in labellist]
 
 #Create dataframs for Dash app
 pxdf1 = pd.DataFrame()
-pxdf1['Mutations'] = mutationlist1
+pxdf1['Mutations'] = mutationlist
 pxdf1['Labels'] = labellist
 pxdf1['Maximum prevalence (%)'] = [float(a) for a in maxprevalencelist]
 pxdf1['Change in prevalence (Fin - Start)(%)'] = [float(a) for a in maxprevalencechangelist]
 pxdf1['Change in prevalence (All)(%)'] = [float(a) for a in maxprevalencechangealllist]
 pxdf1['Initial prevalence'] = [float(a) for a in initlist]
-pxdf1['Percentage by period'] = [[float(b) for b in a] for a in percentagelistlist1]
+pxdf1['Percentage by period'] = [[float(b) for b in a] for a in percentagelistlist]
 pxdf1['Gene'] = genelist
 pxdf1['AA Mutations'] = aamutationlist
 pxdf1['AA Label'] = pxdf1['Gene'] + ": " + pxdf1['AA Mutations']
+pxdf1['Synonymous'] = synonymouslist
 
 pxdf2 = pd.DataFrame()
 pxdf2['Totals'] = totallist1
