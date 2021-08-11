@@ -167,7 +167,8 @@ pxdf2['Totals'] = totallist1
 pxdf2['Periods'] = periodlist1
 pxdf2['Label'] = 'Total Number of Sequences'
 
-pxdf1.to_feather(lineage + '_1.feather')
-pxdf2.to_feather(lineage + '_2.feather')
+#Stores dataframes in .parquet format with Brotli compression for fast decompression and small file size.
+pxdf1.to_parquet(lineage + '_1.parquet', compression="brotli")
+pxdf2.to_parquet(lineage + '_2.parquet', compression="brotli")
 
 print("Done")
