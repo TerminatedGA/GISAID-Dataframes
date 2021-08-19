@@ -26,7 +26,7 @@ testfile = args['aln']
 lineage = args['name']
 minall = 0
 maxinit = 100
-minchange = 0 
+minchange = -100 
 
 ignore_list = set(["-", "R", "Y", "W", "S", "M", "K", "H", "B", "D", "V", "N", "X"])
 mutation1 = []
