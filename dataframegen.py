@@ -41,10 +41,11 @@ for ref in SeqIO.parse(testfile, 'fasta'):
     refseq = refseq_record.seq
     break
 
+datematch = re.compile(r'20[0-9][0-9]-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])')
+
 #Loop 1: Get date, name and mutations of each sequence
-    
 def loop1(seq_record):
-    if str(seq_record.upper()) != str(refseq_record) and re.compile(r'20[0-9][0-9]-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])').search(str(seq_record)):
+    if str(seq_record.upper()) != str(refseq_record) and datematch.search(str(seq_record)):
         date_match = re.search(r'20[0-9][0-9]-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])', seq_record.description)
         date = datetime.strptime(date_match.group(), "%Y-%m-%d").date()
         mutation1objects = []
